@@ -1,0 +1,71 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE appreciation (
+  id SERIAL PRIMARY KEY,
+  sender_id INTEGER REFERENCES users(id),
+  recipient_id INTEGER REFERENCES users(id),
+  amount DECIMAL(3, 2) NOT NULL CHECK (amount <= 0.99),
+  message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username, email, password) VALUES
+  ('john', 'john@example.com', 'password1'),
+  ('mary', 'mary@example.com', 'password2'),
+  ('paul', 'paul@example.com', 'password3'),
+  ('lisa', 'lisa@example.com', 'password4'),
+  ('steve', 'steve@example.com', 'password5'),
+  ('susan', 'susan@example.com', 'password6'),
+  ('mike', 'mike@example.com', 'password7'),
+  ('anna', 'anna@example.com', 'password8'),
+  ('david', 'david@example.com', 'password9'),
+  ('julia', 'julia@example.com', 'password10');
+
+INSERT INTO appreciation (sender_id, recipient_id, amount, message) VALUES
+  (1, 2, 0.50, 'Thanks for your help, Mary!'),
+  (1, 3, 0.99, 'Great job on the project, Paul!'),
+  (1, 4, 0.25, 'Appreciate your effort, Lisa!'),
+  (1, 5, 0.75, 'Well done, Steve!'),
+  (1, 6, 0.99, 'Keep up the good work, Susan!'),
+  (1, 7, 0.45, 'Awesome support, Mike!'),
+  (1, 8, 0.30, 'You are fantastic, Anna!'),
+  (1, 9, 0.60, 'Great collaboration, David!'),
+  (1, 10, 0.50, 'Thanks for the quick help, Julia!'),
+  (2, 1, 0.50, 'Thank you for the support, John!'),
+  (2, 3, 0.99, 'You did amazing, Paul!'),
+  (2, 4, 0.25, 'Great teamwork, Lisa!'),
+  (2, 5, 0.75, 'Nice work, Steve!'),
+  (2, 6, 0.99, 'Fantastic effort, Susan!'),
+  (2, 7, 0.40, 'Great job, Mike!'),
+  (2, 8, 0.60, 'Thanks a lot, Anna!'),
+  (3, 1, 0.50, 'Much appreciated, John!'),
+  (3, 2, 0.99, 'You rock, Mary!'),
+  (3, 4, 0.25, 'Awesome work, Lisa!'),
+  (3, 5, 0.75, 'Superb, Steve!'),
+  (3, 6, 0.99, 'Excellent, Susan!'),
+  (4, 1, 0.50, 'Great help, John!'),
+  (4, 2, 0.99, 'Wonderful job, Mary!'),
+  (4, 3, 0.25, 'Thanks a lot, Paul!'),
+  (4, 5, 0.75, 'You are amazing, Steve!'),
+  (4, 6, 0.99, 'Keep it up, Susan!'),
+  (4, 7, 0.55, 'Excellent teamwork, Mike!'),
+  (5, 1, 0.50, 'Fantastic, John!'),
+  (5, 2, 0.99, 'Could not have done it without you, Mary!'),
+  (5, 3, 0.25, 'You are the best, Paul!'),
+  (5, 4, 0.75, 'Super helpful, Lisa!'),
+  (5, 6, 0.99, 'Awesome effort, Susan!'),
+  (6, 1, 0.60, 'Great work, John!'),
+  (6, 2, 0.80, 'Thank you so much, Mary!'),
+  (7, 1, 0.70, 'Impressive work, John!'),
+  (7, 3, 0.85, 'Really appreciate it, Paul!'),
+  (8, 2, 0.95, 'Amazing job, Mary!'),
+  (8, 4, 0.50, 'Thanks for the help, Lisa!'),
+  (9, 5, 0.40, 'Great contribution, Steve!'),
+  (9, 6, 0.70, 'Well done, Susan!'),
+  (10, 3, 0.60, 'Nice effort, Paul!'),
+  (10, 4, 0.55, 'You are fantastic, Lisa!');
