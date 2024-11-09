@@ -62,3 +62,16 @@ app.post('/api/appreciation/send', async (req, res) => {
     res.status(500).send('Error sending appreciation');
   }
 });
+
+app.get('/api/appreciation/history/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const history = await pool.query(
+      'SELECT * FROM appreciation WHERE sender_id = $1 OR recipient_id = $1 ORDER BY created_at DESC',
+      [userId]
+    );
+    res.json(history.rows);
+  } catch (error) {
+    res.status(500).send('Error fetching appreciation history');
+  }
+});
