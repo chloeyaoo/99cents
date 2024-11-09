@@ -45,3 +45,20 @@ app.post('/api/login', async (req, res) => {
     res.status(500).send('Error logging in');
   }
 });
+
+app.post('/api/appreciation/send', async (req, res) => {
+  const { sender_id, recipient_username, amount, message } = req.body;
+  try {
+    if (amount > 0.99) return res.status(400).send('Amount exceeds limit');
+    const recipient = await pool.query('SELECT id FROM users WHERE username = $1', [recipient_username]);
+    if (recipient.rows.length === 0) return res.status(404).send('Recipient not found');
+
+    await pool.query(
+      'INSERT INTO appreciation (sender_id, recipient_id, amount, message, created_at) VALUES ($1, $2, $3, $4, NOW())',
+      [sender_id, recipient.rows[0].id, amount, message]
+    );
+    res.status(201).send('Appreciation sent');
+  } catch (error) {
+    res.status(500).send('Error sending appreciation');
+  }
+});
