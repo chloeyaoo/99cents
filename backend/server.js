@@ -75,3 +75,14 @@ app.get('/api/appreciation/history/:userId', async (req, res) => {
     res.status(500).send('Error fetching appreciation history');
   }
 });
+
+app.get('/api/appreciation/leaderboard', async (req, res) => {
+  try {
+    const leaderboard = await pool.query(
+      'SELECT username, COUNT(*) as appreciation_count FROM users u JOIN appreciation a ON u.id = a.sender_id GROUP BY username ORDER BY appreciation_count DESC LIMIT 10'
+    );
+    res.json(leaderboard.rows);
+  } catch (error) {
+    res.status(500).send('Error fetching leaderboard');
+  }
+});
