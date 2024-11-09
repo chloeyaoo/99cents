@@ -86,3 +86,22 @@ app.get('/api/appreciation/leaderboard', async (req, res) => {
     res.status(500).send('Error fetching leaderboard');
   }
 });
+
+app.get('/api/appreciation/analytics', async (req, res) => {
+  try {
+    const totalAmount = await pool.query('SELECT SUM(amount) as total_amount FROM appreciation');
+    const totalMessages = await pool.query('SELECT COUNT(*) as total_messages FROM appreciation');
+    const mostActiveHours = await pool.query(
+      `SELECT EXTRACT(HOUR FROM created_at) as hour, COUNT(*) as count 
+       FROM appreciation GROUP BY hour ORDER BY count DESC LIMIT 5`
+    );
+
+    res.json({
+      totalAmount: totalAmount.rows[0].total_amount,
+      totalMessages: totalMessages.rows[0].total_messages,
+      mostActiveHours: mostActiveHours.rows,
+    });
+  } catch (error) {
+    res.status(500).send('Error fetching analytics');
+  }
+});
