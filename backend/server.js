@@ -30,15 +30,11 @@ app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    console.log('email:', email);
-    console.log('user:', user);
     if (user.rows.length > 0) {
-      console.log('Password provided for login:', password);
-      console.log('Stored hashed password:', user.rows[0].password);
       const validPassword = await bcrypt.compare(password, user.rows[0].password);
       if (validPassword) {
         const token = jwt.sign({ id: user.rows[0].id }, 'secretkey');
-        res.json({ token });
+        res.json({ token, userId: user.rows[0].id }); // Include userId in the response
       } else {
         res.status(401).send('Invalid credentials');
       }
@@ -49,6 +45,7 @@ app.post('/api/login', async (req, res) => {
     res.status(500).send('Error logging in');
   }
 });
+
 
 app.post('/api/appreciation/send', async (req, res) => {
   const { sender_id, recipient_username, amount, message } = req.body;
