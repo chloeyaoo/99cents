@@ -1,42 +1,90 @@
 import { useState } from 'react';
 import axios from 'axios';
+import Card, { CardHeader, CardTitle, CardContent } from './ui/Card';
+import Input from './ui/Input';
+import Textarea from './ui/Textarea';
+import Button from './ui/Button';
+import { FiHeart } from 'react-icons/fi';
 
 function SendAppreciation() {
-  const [recipientUsername, setRecipientUsername] = useState('');
+  const [recipient, setRecipient] = useState('');
   const [message, setMessage] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(0.99);
+  const userId = localStorage.getItem('userId');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSend = async () => {
     try {
-      await axios.post('http://localhost:5001/api/appreciation/send', {
-        recipient_username: recipientUsername,
-        amount,
-        message,
-      });
-      alert('Appreciation sent!');
+      const token = localStorage.getItem('token');
+      await axios.post(
+        'http://localhost:5001/api/appreciation/send',
+        {
+          sender_id: userId,
+          recipient_username: recipient,
+          amount,
+          message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert('Appreciation sent successfully!');
+      setRecipient('');
+      setMessage('');
     } catch (error) {
-      alert('Error sending appreciation');
+      console.error('Error sending appreciation:', error);
+      alert('Failed to send appreciation. Please try again.');
     }
   };
 
   return (
     <div className="container mx-auto mt-20 p-4">
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Recipient Username</label>
-          <input value={recipientUsername} onChange={(e) => setRecipientUsername(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="text" />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Message</label>
-          <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"></textarea>
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Amount (max $0.99)</label>
-          <input value={amount} onChange={(e) => setAmount(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" type="number" max="0.99" />
-        </div>
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send</button>
-      </form>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FiHeart className="text-red-500" />
+            Send Appreciation
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Recipient Username</label>
+              <Input
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
+                placeholder="Enter recipient's username"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Message</label>
+              <Textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write a personal note of appreciation..."
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
+              <Input
+                value={amount}
+                onChange={(e) => setAmount(parseFloat(e.target.value))}
+                type="number"
+                min="0.01"
+                max="0.99"
+                step="0.01"
+                required
+              />
+            </div>
+            <Button onClick={handleSend} className="w-full mt-4">
+              Send Appreciation
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
