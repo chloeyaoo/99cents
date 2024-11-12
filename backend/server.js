@@ -29,20 +29,41 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   try {
+    // Fetch the user details from the database by email
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+
+    // Check if the user exists
     if (user.rows.length > 0) {
+      // Compare the provided password with the hashed password stored in the database
       const validPassword = await bcrypt.compare(password, user.rows[0].password);
+
       if (validPassword) {
+        // Generate a JWT token using the user ID
         const token = jwt.sign({ id: user.rows[0].id }, 'secretkey');
-        res.json({ token, userId: user.rows[0].id }); // Include userId in the response
+
+        // Return both the token and userId in the response
+        res.json({ token: token, userId: user.rows[0].id });
       } else {
+        // If the password is incorrect
         res.status(401).send('Invalid credentials');
       }
     } else {
+      // If no user found with the given email
       res.status(404).send('User not found');
     }
   } catch (error) {
+    // If there's an error during the login process
     res.status(500).send('Error logging in');
+  }
+});
+
+// Endpoint to get all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await pool.query('SELECT id, username FROM users');
+    res.json(users.rows);
+  } catch (error) {
+    res.status(500).send('Error fetching users');
   }
 });
 

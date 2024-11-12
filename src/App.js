@@ -15,9 +15,13 @@ function App() {
     setIsAuthenticated(true);
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
+
   return (
     <Router>
-      <Navbar />
+      {isAuthenticated && <Navbar onLogout={handleLogout} />}
       <Routes>
         {!isAuthenticated ? (
           <>
