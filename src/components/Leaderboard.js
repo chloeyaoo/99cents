@@ -7,13 +7,15 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend,
 } from 'chart.js';
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
 
 function Leaderboard() {
   const [userStats, setUserStats] = useState([]);
@@ -46,52 +48,7 @@ function Leaderboard() {
   // Prepare data for charts
   const usernames = userStats.map(user => user.username);
 
-//   // Rest of the chart preparation code remains the same...
-// }
-
-
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import Card, { CardHeader, CardTitle, CardContent } from './ui/Card';
-// import { Bar } from 'react-chartjs-2';
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   BarElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from 'chart.js';
-
-// // Register Chart.js components
-// ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-// function Leaderboard() {
-//   const [userStats, setUserStats] = useState([]);
-  
-//   useEffect(() => {
-//     const fetchLeaderboardData = async () => {
-//       try {
-//         const token = localStorage.getItem('token');
-//         const response = await axios.get('http://localhost:5001/api/leaderboard', {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         setUserStats(response.data);
-//       } catch (error) {
-//         console.error('Error fetching leaderboard data:', error);
-//       }
-//     };
-
-//     fetchLeaderboardData();
-//   }, []);
-
-//   // Prepare data for charts
-//   const usernames = userStats.map(user => user.username);
-  
-  // Total Messages Sent
+  // Total Messages Sent Data
   const totalMessagesData = {
     labels: usernames,
     datasets: [
@@ -105,21 +62,33 @@ function Leaderboard() {
     ],
   };
 
-  // Total Amount Sent
+  // Total Amount Sent Data (Bar) and Average Amount Per Message (Line) Data
   const totalAmountData = {
     labels: usernames,
     datasets: [
       {
+        type: 'bar',
         label: 'Total Amount Sent ($)',
         data: userStats.map(user => user.total_amount),
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
+        yAxisID: 'y1',
+      },
+      {
+        type: 'line',
+        label: 'Average Amount per Message ($)',
+        data: userStats.map(user => (user.total_messages ? (user.total_amount / user.total_messages).toFixed(2) : 0)),
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderWidth: 2,
+        fill: false,
+        yAxisID: 'y2',
       },
     ],
   };
 
-  // Longest Streaks
+  // Longest Streak Data
   const longestStreaksData = {
     labels: usernames,
     datasets: [
@@ -155,20 +124,46 @@ function Leaderboard() {
         </CardContent>
       </Card>
 
-      {/* Card for Total Amount Sent */}
+      {/* Card for Total Amount Sent (Bar) and Average Amount Per Message (Line) */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold mb-6">Total Amount Sent by User</CardTitle>
+          <CardTitle className="text-2xl font-bold mb-6">Total Amount Sent and Average Amount per Message</CardTitle>
         </CardHeader>
         <CardContent>
           <Bar 
-            data={totalAmountData} 
+            data={totalAmountData}
             options={{
-              indexAxis: 'y',
               responsive: true,
+              scales: {
+                y1: {
+                  type: 'linear',
+                  position: 'left',
+                  title: {
+                    display: true,
+                    text: 'Total Amount Sent ($)',
+                  },
+                },
+                y2: {
+                  type: 'linear',
+                  position: 'right',
+                  title: {
+                    display: true,
+                    text: 'Average Amount per Message ($)',
+                  },
+                  grid: {
+                    drawOnChartArea: false, // Prevent double grid lines
+                  },
+                },
+              },
               plugins: {
-                legend: { display: false },
-                title: { display: true, text: 'Total Amount Sent by User' },
+                legend: {
+                  display: true,
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: 'Total Amount Sent and Average Amount per Message',
+                },
               },
             }}
           />
