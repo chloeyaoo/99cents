@@ -3,16 +3,16 @@
     const pool = require('./db');
 
     const users = [
-        { username: 'john', email: 'john@example.com', password: 'password1' },
-        { username: 'mary', email: 'mary@example.com', password: 'password2' },
-        { username: 'paul', email: 'paul@example.com', password: 'password3' },
-        { username: 'lisa', email: 'lisa@example.com', password: 'password4' },
-        { username: 'steve', email: 'steve@example.com', password: 'password5' },
-        { username: 'susan', email: 'susan@example.com', password: 'password6' },
-        { username: 'mike', email: 'mike@example.com', password: 'password7' },
-        { username: 'anna', email: 'anna@example.com', password: 'password8' },
-        { username: 'david', email: 'david@example.com', password: 'password9' },
-        { username: 'julia', email: 'julia@example.com', password: 'password10' }
+        { username: 'John', email: 'john@example.com', password: 'password1' },
+        { username: 'Mary', email: 'mary@example.com', password: 'password2' },
+        { username: 'Paul', email: 'paul@example.com', password: 'password3' },
+        { username: 'Lisa', email: 'lisa@example.com', password: 'password4' },
+        { username: 'Steve', email: 'steve@example.com', password: 'password5' },
+        { username: 'Susan', email: 'susan@example.com', password: 'password6' },
+        { username: 'Mike', email: 'mike@example.com', password: 'password7' },
+        { username: 'Anna', email: 'anna@example.com', password: 'password8' },
+        { username: 'David', email: 'david@example.com', password: 'password9' },
+        { username: 'Julia', email: 'julia@example.com', password: 'password10' }
     ];
 
     for (let user of users) {
