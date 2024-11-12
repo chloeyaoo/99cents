@@ -5,20 +5,36 @@ import { FiArrowUpRight, FiArrowDownLeft, FiMessageCircle } from 'react-icons/fi
 
 function ActivityHistory() {
   const [history, setHistory] = useState([]);
+  const [userMap, setUserMap] = useState({});
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         const token = localStorage.getItem('token');
+        // Fetch activity history
         const response = await axios.get(`http://localhost:5001/api/appreciation/history/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setHistory(response.data);
+
+        // Fetch user details to get usernames
+        const usersResponse = await axios.get('http://localhost:5001/api/users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Create a map of userId to username
+        const userMap = usersResponse.data.reduce((acc, user) => {
+          acc[user.id] = user.username;
+          return acc;
+        }, {});
+        setUserMap(userMap);
       } catch (error) {
-        console.error('Error fetching appreciation history:', error);
+        console.error('Error fetching appreciation history or user data:', error);
       }
     };
 
@@ -28,6 +44,11 @@ function ActivityHistory() {
   // Split history into received and sent appreciations
   const receivedAppreciations = history.filter(entry => entry.recipient_id === parseInt(userId));
   const sentAppreciations = history.filter(entry => entry.sender_id === parseInt(userId));
+
+  // Function to convert string to proper casing
+  const toProperCase = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   return (
     <div className="container mx-auto mt-20 p-4 space-y-8">
@@ -44,7 +65,7 @@ function ActivityHistory() {
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-2">
                       <FiArrowDownLeft className="text-green-500" />
-                      <p className="font-medium">From: {entry.sender_id}</p>
+                      <p className="font-medium">From: {toProperCase(userMap[entry.sender_id] || 'Unknown')}</p>
                     </div>
                     <div className="flex items-center gap-4">
                       <p className="font-medium text-green-600">${Number(entry.amount).toFixed(2)}</p>
@@ -79,7 +100,7 @@ function ActivityHistory() {
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-2">
                       <FiArrowUpRight className="text-blue-500" />
-                      <p className="font-medium">To: {entry.recipient_id}</p>
+                      <p className="font-medium">To: {toProperCase(userMap[entry.recipient_id] || 'Unknown')}</p>
                     </div>
                     <div className="flex items-center gap-4">
                       <p className="font-medium text-blue-600">${Number(entry.amount).toFixed(2)}</p>
