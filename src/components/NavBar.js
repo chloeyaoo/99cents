@@ -35,12 +35,12 @@ function Navbar() {
           <li className="my-4 lg:my-0">
             <Link to="/history" className="nav-link">Activity History</Link>
           </li>
-          <li className="my-4 lg:my-0">
+          {/* <li className="my-4 lg:my-0">
             <Link to="/leaderboard" className="nav-link">Leaderboards</Link>
           </li>
           <li className="my-4 lg:my-0">
             <Link to="/analytics" className="nav-link">Analytics</Link>
-          </li>
+          </li> */}
           <li className="my-4 lg:my-0">
             <button onClick={handleLogout} className="nav-link">Logout</button>
           </li>
