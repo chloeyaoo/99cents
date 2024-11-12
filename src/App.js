@@ -9,7 +9,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Router>
-      {isAuthenticated && <Navbar />}
+      <Navbar />
       <Routes>
         {!isAuthenticated ? (
           <>
