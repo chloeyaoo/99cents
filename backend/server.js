@@ -127,3 +127,59 @@ app.get('/api/appreciation/analytics', async (req, res) => {
     res.status(500).send('Error fetching analytics');
   }
 });
+
+// Endpoint to get leaderboard data
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+    // Query to get total messages and total amount sent by each user
+    const messagesAndAmounts = await pool.query(`
+      SELECT 
+        u.id,
+        u.username,
+        COUNT(a.id) AS total_messages,
+        COALESCE(SUM(a.amount), 0) AS total_amount
+      FROM users u
+      LEFT JOIN appreciation a ON u.id = a.sender_id
+      GROUP BY u.id, u.username
+      ORDER BY total_messages DESC
+    `);
+
+    // Query to get the longest streak for each user
+    const streaks = await pool.query(`
+      WITH ranked_dates AS (
+        SELECT 
+          sender_id,
+          created_at::date AS activity_date,
+          ROW_NUMBER() OVER (PARTITION BY sender_id ORDER BY created_at::date) - EXTRACT(epoch FROM created_at::date)/86400 AS group_num
+        FROM appreciation
+      ),
+      streak_groups AS (
+        SELECT 
+          sender_id,
+          COUNT(*) AS streak_length
+        FROM ranked_dates
+        GROUP BY sender_id, group_num
+      )
+      SELECT sender_id, MAX(streak_length) AS longest_streak
+      FROM streak_groups
+      GROUP BY sender_id
+    `);
+
+    // Map streaks to users
+    const streakMap = {};
+    streaks.rows.forEach(row => {
+      streakMap[row.sender_id] = row.longest_streak;
+    });
+
+    // Combine messages, amounts, and streaks
+    const leaderboard = messagesAndAmounts.rows.map(user => ({
+      ...user,
+      longest_streak: streakMap[user.id] || 0,
+    }));
+
+    res.json(leaderboard);
+  } catch (error) {
+    console.error('Error fetching leaderboard data:', error);
+    res.status(500).send('Error fetching leaderboard data');
+  }
+});
