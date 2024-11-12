@@ -12,9 +12,14 @@ function Login({ onLogin }) {
     try {
       const response = await axios.post('http://localhost:5001/api/login', { email, password });
       if (response.data.token && response.data.userId) {
+        // Store token and userId in localStorage
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userId', response.data.userId); // Store userId in localStorage
+        localStorage.setItem('userId', response.data.userId);
+
+        // Update state to indicate successful login
         onLogin();
+
+        // Navigate to the history page after login
         navigate('/history');
       }
     } catch (error) {

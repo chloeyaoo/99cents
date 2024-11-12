@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import Button from '../components/ui/Button';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-blue-500 p-4 fixed w-full top-0 z-10">
+    <nav className="bg-gradient-to-r from-blue-600 to-purple-500 p-4 fixed w-full top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-white text-2xl">Appreciation App</h1>
         <div className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
@@ -29,42 +30,42 @@ function Navbar() {
           {!isAuthenticated ? (
             <>
               <li className="m-4">
-                <Link to="/login" className="text-white">
-                  Login
+                <Link to="/login">
+                  <Button variant="outline" className="text-white">Login</Button>
                 </Link>
               </li>
               <li className="m-4">
-                <Link to="/register" className="text-white">
-                  Register
+                <Link to="/register">
+                  <Button variant="outline" className="text-white">Register</Button>
                 </Link>
               </li>
             </>
           ) : (
             <>
               <li className="m-4">
-                <Link to="/send" className="text-white">
-                  Send Appreciation
+                <Link to="/send">
+                  <Button className="text-white">Send Appreciation</Button>
                 </Link>
               </li>
               <li className="m-4">
-                <Link to="/history" className="text-white">
-                  Activity History
+                <Link to="/history">
+                  <Button className="text-white">Activity History</Button>
                 </Link>
               </li>
               <li className="m-4">
-                <Link to="/leaderboard" className="text-white">
-                  Leaderboards
+                <Link to="/leaderboard">
+                  <Button className="text-white">Leaderboards</Button>
                 </Link>
               </li>
               <li className="m-4">
-                <Link to="/analytics" className="text-white">
-                  Analytics
+                <Link to="/analytics">
+                  <Button className="text-white">Analytics</Button>
                 </Link>
               </li>
               <li className="m-4">
-                <button onClick={handleLogout} className="text-white">
+                <Button onClick={handleLogout} variant="outline" className="text-white">
                   Logout
-                </button>
+                </Button>
               </li>
             </>
           )}
