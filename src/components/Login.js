@@ -10,10 +10,10 @@ function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make sure to update the base URL if backend URL differs.
       const response = await axios.post('http://localhost:5001/api/login', { email, password });
-      if (response.data.token) {
+      if (response.data.token && response.data.userId) {
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userId', response.data.userId); // Store userId in localStorage
         onLogin();
         navigate('/history');
       }
