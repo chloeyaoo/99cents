@@ -9,7 +9,7 @@ function SendAppreciation() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/appreciation/send', {
+      await axios.post('http://localhost:5001/api/appreciation/send', {
         recipient_username: recipientUsername,
         amount,
         message,

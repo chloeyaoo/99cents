@@ -11,7 +11,7 @@ function Analytics() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await axios.get('/api/appreciation/analytics');
+        const response = await axios.get('http://localhost:5001/api/appreciation/analytics');
         setAnalytics(response.data);
       } catch (error) {
         alert('Error fetching analytics');

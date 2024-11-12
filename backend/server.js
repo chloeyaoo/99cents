@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 const bcrypt = require('bcrypt');
@@ -30,7 +30,11 @@ app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    console.log('email:', email);
+    console.log('user:', user);
     if (user.rows.length > 0) {
+      console.log('Password provided for login:', password);
+      console.log('Stored hashed password:', user.rows[0].password);
       const validPassword = await bcrypt.compare(password, user.rows[0].password);
       if (validPassword) {
         const token = jwt.sign({ id: user.rows[0].id }, 'secretkey');
