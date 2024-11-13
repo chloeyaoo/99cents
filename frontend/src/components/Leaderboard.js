@@ -13,6 +13,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import API_BASE_URL from '../apiConfig';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
@@ -25,7 +26,7 @@ function Leaderboard() {
     const fetchLeaderboardData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5001/api/leaderboard', {
+        const response = await axios.get(`${API_BASE_URL}/api/leaderboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

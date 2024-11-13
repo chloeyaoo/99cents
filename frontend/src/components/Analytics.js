@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../apiConfig';
 
 function Analytics() {
   const [analytics, setAnalytics] = useState({
@@ -11,7 +12,7 @@ function Analytics() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/appreciation/analytics');
+        const response = await axios.get(`${API_BASE_URL}/api/appreciation/analytics`);
         setAnalytics(response.data);
       } catch (error) {
         alert('Error fetching analytics');

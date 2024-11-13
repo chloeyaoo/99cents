@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card, { CardHeader, CardTitle, CardContent } from './ui/Card';
 import { FiArrowUpRight, FiArrowDownLeft, FiMessageCircle, FiZap, FiAward } from 'react-icons/fi';
+import API_BASE_URL from '../apiConfig';
 
 function ActivityHistory() {
   const [history, setHistory] = useState([]);
@@ -22,7 +23,7 @@ function ActivityHistory() {
       try {
         const token = localStorage.getItem('token');
         // Fetch activity history
-        const response = await axios.get(`http://localhost:5001/api/appreciation/history/${userId}`, {
+        const response = await axios.get(`${API_BASE_URL}/api/appreciation/history/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -30,7 +31,7 @@ function ActivityHistory() {
         setHistory(response.data);
 
         // Fetch user details to get usernames
-        const usersResponse = await axios.get('http://localhost:5001/api/users', {
+        const usersResponse = await axios.get(`${API_BASE_URL}/api/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

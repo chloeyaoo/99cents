@@ -6,6 +6,7 @@ import Textarea from './ui/Textarea';
 import Button from './ui/Button';
 import { FiHeart } from 'react-icons/fi';
 import Modal from './Modal'; // Import the Modal component
+import API_BASE_URL from '../apiConfig';
 
 function SendAppreciation() {
   const [recipient, setRecipient] = useState('');
@@ -20,7 +21,7 @@ function SendAppreciation() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:5001/api/appreciation/send',
+        `${API_BASE_URL}/api/appreciation/send`,
         {
           sender_id: userId,
           recipient_username: recipient,
