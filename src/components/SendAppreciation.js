@@ -5,11 +5,15 @@ import Input from './ui/Input';
 import Textarea from './ui/Textarea';
 import Button from './ui/Button';
 import { FiHeart } from 'react-icons/fi';
+import Modal from './Modal'; // Import the Modal component
 
 function SendAppreciation() {
   const [recipient, setRecipient] = useState('');
   const [message, setMessage] = useState('');
   const [amount, setAmount] = useState(0.99);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
   const userId = localStorage.getItem('userId');
 
   const handleSend = async () => {
@@ -29,13 +33,24 @@ function SendAppreciation() {
           },
         }
       );
-      alert('Appreciation sent successfully!');
+      // Set modal state for success
+      setModalTitle('Success');
+      setModalMessage('Appreciation sent successfully!');
+      setIsModalOpen(true);
+      // Reset fields
       setRecipient('');
       setMessage('');
     } catch (error) {
       console.error('Error sending appreciation:', error);
-      alert('Failed to send appreciation. Please try again.');
+      // Set modal state for error
+      setModalTitle('Error');
+      setModalMessage('Failed to send appreciation. Please try again.');
+      setIsModalOpen(true);
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -85,6 +100,14 @@ function SendAppreciation() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modal Component */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={modalTitle}
+        message={modalMessage}
+      />
     </div>
   );
 }
