@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-  origin: 'https://your-frontend.onrender.com', // Replace with the actual Render URL of your frontend
+  origin: 'https://nine9cents-frontend.onrender.com', // Replace with the actual Render URL of your frontend
   credentials: true
 }));
 app.use(express.json());
