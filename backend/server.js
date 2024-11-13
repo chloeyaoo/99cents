@@ -15,19 +15,45 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('./db');
 
+// app.post('/api/register', async (req, res) => {
+//   const { username, email, password } = req.body;
+//   try {
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     await pool.query(
+//       'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)',
+//       [username, email, hashedPassword]
+//     );
+//     res.status(201).send('User registered');
+//   } catch (error) {
+//     res.status(500).send('Error registering user');
+//   }
+// });
+
 app.post('/api/register', async (req, res) => {
   const { username, email, password } = req.body;
+
+  // Add detailed logging
+  console.log('Registering user:', { username, email });
+
   try {
+    const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (existingUser.rows.length > 0) {
+      return res.status(400).send('User with this email already exists');
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
       'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)',
       [username, email, hashedPassword]
     );
-    res.status(201).send('User registered');
+
+    res.status(201).send('User registered successfully');
   } catch (error) {
-    res.status(500).send('Error registering user');
+    console.error('Error registering user:', error.message, error.stack);
+    res.status(500).send('Internal server error');
   }
 });
+
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
