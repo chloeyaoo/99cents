@@ -2,7 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://your-frontend.onrender.com', // Replace with the actual Render URL of your frontend
+  credentials: true
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
