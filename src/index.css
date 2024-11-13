@@ -29,8 +29,3 @@ code {
   transform: scale(1.1);
   border-radius: 8px;
 }
-
-/* Utility classes for smooth transitions */
-.navbar-transition {
-  transition: all 0.3s ease-in-out;
-}
