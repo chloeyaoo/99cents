@@ -63,7 +63,7 @@ function Navbar({ handleLogout }) {
                   Activity History
                 </Link>
               </li>
-              <li className="my-4 lg:my-0">
+              {/* <li className="my-4 lg:my-0">
                 <Link
                   to="/leaderboard"
                   className="nav-link text-white hover:text-blue-200 transition-all"
@@ -80,7 +80,7 @@ function Navbar({ handleLogout }) {
                 >
                   Analytics
                 </Link>
-              </li>
+              </li> */}
               <li className="my-4 lg:my-0">
                 <button
                   onClick={handleLogoutClick}
