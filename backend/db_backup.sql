@@ -108,6 +108,22 @@ ALTER TABLE ONLY public.appreciation ALTER COLUMN id SET DEFAULT nextval('public
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, email, password) FROM stdin;
+1	John	john@example.com	$2a$10$/es0vTPSY08If6WIS6mv/uz9E2uZjFEyMe8Ut4jBnWmuU8GWc2Fgy
+2	Mary	mary@example.com	$2a$10$I9TuaY67O5xp/phe9JvM.ufCGQU7d6IBHfFcYiACUDTriEfMRdnIK
+3	Paul	paul@example.com	$2a$10$y.3vuorVf/4LksEcpyedvOJuvk4Gg5EiIWn8Vijj1IXOwWDTB6J6m
+4	Lisa	lisa@example.com	$2a$10$5xbcXGLc7Qk3BvBrpto2Ku9B191sKqiJDM6YE3V6afIBjX6/Pg7v.
+5	Steve	steve@example.com	$2a$10$cl7mSp02HMFvLlxYtv9dd.dBt8SJiOG5HW75xVS3lhiQYiTi2xdTW
+6	Susan	susan@example.com	$2a$10$oEwOKaiU.qwJhTanMw3bnO8CacP2ADNhGGnlVs1pFZrpsHRlitoVC
+7	Mike	mike@example.com	$2a$10$.AaMoWEYKXNjzdJusNfpO.8fMHSLfqcKf10Opz/NzutntrraGuxnW
+8	Anna	anna@example.com	$2a$10$Ie5hmNRkrre.Il5HqiVhtuakOt4tM7yTVG6KbmuDwa9j6Kbpvd2HC
+9	David	david@example.com	$2a$10$PqZ2Ptg33wikdldHJUSZHeLzXnK2wIiKijRlBZubY86MSVbUL95a.
+10	Julia	julia@example.com	$2a$10$hMKtz6Hcn9NE.2myrMVBW.i6ZTX745XKiqzNB66P.N/Vj712cGiPO
+\.
 
 --
 -- Data for Name: appreciation; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -178,44 +194,23 @@ COPY public.appreciation (id, sender_id, recipient_id, amount, message, created_
 62	10	3	0.50	Great job, Paul!	2024-10-03 10:45:00
 63	10	4	0.65	Keep it up, Lisa!	2024-10-04 14:00:00
 64	10	5	0.95	Excellent work, Steve!	2024-10-05 16:00:00
-65	2	1	0.99	test 1	2024-11-12 15:54:25.683275
-66	1	2	0.99	test2	2024-11-12 16:26:26.936329
-67	1	2	0.99	Thank you for being so supportive!	2024-11-12 16:44:21.9267
-68	11	1	0.99	Hello there! Thanks for your help :)	2024-11-13 15:22:08.543992
 \.
 
 
---
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.users (id, username, email, password) FROM stdin;
-1	John	john@example.com	$2b$10$boYmCvoKu4rw.vpDhIqXQu5ntOWqjrmf1xAou3Q4YD5ALRvGjtw/2
-2	Mary	mary@example.com	$2b$10$MamyUNhrOrfVigOdagt9oOATC6D9gkaMTAIpRtIl0A04F8GXPDGUS
-3	Paul	paul@example.com	$2b$10$tfQ3lYUYKCzucfhULOF8nO1WhOpgIX5ccmOTMmDVXIjCwIvF9fig6
-4	Lisa	lisa@example.com	$2b$10$P.1zbJ74Q6R56a9fiOHQ1eJzAOWKooU56j/9qxm0.r1//jkp8gUfe
-5	Steve	steve@example.com	$2b$10$7hbSTwfjt.e6Sn4S0Ax/8uqRxtbTwaqxg9OlBH0a9GcGWe1cvUTw6
-6	Susan	susan@example.com	$2b$10$VSBuFHsHTLor1yJcrzscw.LhDBtyd0q.Rcp0Dzg4UlVy1nDDQ18lG
-7	Mike	mike@example.com	$2b$10$pWBldjjo3z9.LBhLD9moieE0qHNFk1SHt0IKyzSUrvwpJmoCctHWS
-8	Anna	anna@example.com	$2b$10$s7KB292E9/ldeNQl8wwxUelKBKayD9QOPug7gE/dOCjGky2ahV/ny
-9	David	david@example.com	$2b$10$8bG6cJZYktk4lQf9qAak6Oqfr7vLJPqSQFpO8s9e6owh.A.9onn0a
-10	Julia	julia@example.com	$2b$10$dZPpAktGrIdfC2R6PN1rn.mTWSq243SIVrkVhv402kq30QKmvNOZ.
-11	Chloe	chloe@example.com	$2b$10$N2gzG90AK0vzPSoLNrt.1eTsmmGh/8Ym0WR6/eWk/2kQKmDSdzlIS
-\.
 
 
 --
 -- Name: appreciation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.appreciation_id_seq', 68, true);
+SELECT pg_catalog.setval('public.appreciation_id_seq', 64, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 11, true);
+SELECT pg_catalog.setval('public.users_id_seq', 10, true);
 
 
 --

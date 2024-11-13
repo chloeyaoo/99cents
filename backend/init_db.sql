@@ -84,7 +84,7 @@ INSERT INTO appreciation (sender_id, recipient_id, amount, message, created_at) 
   (8, 5, 0.40, 'Great contribution, Steve!', '2024-10-01 10:15:00'),
   (8, 6, 0.70, 'Well done, Susan!', '2024-10-02 11:00:00'),
   (8, 7, 0.60, 'Great effort, Mike!', '2024-10-03 14:30:00'),
-
+    
   -- User 9 (David) appreciation messages
   (9, 1, 0.60, 'Nice effort, John!', '2024-10-04 08:45:00'),
   (9, 2, 0.55, 'You are fantastic, Mary!', '2024-10-05 10:00:00'),
