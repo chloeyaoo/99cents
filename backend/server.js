@@ -2,10 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const allowedOrigins = [
+  'https://nine9cents-frontend.onrender.com',
+  'https://www.99centsdailygratitude.com',
+  'https://99centsdailygratitude.com' // Include the root domain if needed
+];
+
 app.use(cors({
-  origin: 'https://nine9cents-frontend.onrender.com', // Replace with the actual Render URL of your frontend
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
